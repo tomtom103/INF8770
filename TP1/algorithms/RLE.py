@@ -1,11 +1,15 @@
+from typing import Literal, Union
+
+
 class RLE:
-    def __init__(self, message: str, counterSize: int = 8) -> None:
+    def __init__(self, message: Union[str, bytes], counterSize: int = 8, type: Literal["text", "binary"] = "text") -> None:
         self.message = message
         self.encoded = []
         self.counterSize = counterSize
         self.binaryMap = { self.message[0]: "{0:b}".format(0).zfill(self.counterSize) }
+        self.type = type
 
-    def encode(self):
+    def encode(self) -> list:
         result = []
         for i, item in enumerate(self.message):
             if item not in self.binaryMap:
@@ -29,6 +33,12 @@ class RLE:
         self.encoded = result
 
         return result
+
+    def _encode_binary(self):
+        pass
+
+    def _encode_text(self):
+        pass
 
     def message_as_binary(self) -> str:
         result = ""

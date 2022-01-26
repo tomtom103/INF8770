@@ -1,29 +1,39 @@
-import math
-import struct
-
 class LZ77:
-    def __init__(self, message, dictSize = 6) -> None:
+    def __init__(self, message, dictSize = 6, lookAhead = 32) -> None:
         self.message = message
         self.dictSize = dictSize
         self.triplets = []
+        self.lookAhead = lookAhead
+    # def encode(self):
+    #     idx = 0
+    #     while idx < len(self.message):
+    #         decalage = 0
+    #         symb = self.message[max(0, idx - self.dictSize): idx]
+    #         if len(symb) < self.dictSize:
+    #             decalage = self.dictSize - len(symb)
+            
+
 
     def encode(self):
-        triplets = []  # Pour sauvegarder les triplets
-
         index = 0  # Position courante dans le message
         while index < len(self.message):
             decalage = 0
+            lookahead = self.lookAhead
             symbDict = self.message[max(0, index - self.dictSize): index]  # Symboles disponibles du dictionnaire
             if len(symbDict) < self.dictSize:
                 decalage = self.dictSize - len(symbDict) #Pour l'ajustement des indices de position quand le dictionnaire n'est pas plein.
-            
-            sousChaine = self.message[index:len(self.message)-1] #Le dernier caractère sera ajouté comme 3e élément du dernier triplet
+            # If we have long strings, we don't want to check for the whole string
+            # Implemented lookahead
+            if index + lookahead > len(self.message):
+                lookahead = len(self.message) - index
+
+            sousChaine = self.message[index:index+lookahead] #Le dernier caractère sera ajouté comme 3e élément du dernier triplet
 
             # On cherche la sous-chaine la plus longue
             pos, length = 0, 0
             while len(sousChaine) > 0:
                 if sousChaine in symbDict:
-                    pos, length = symbDict.rfind(sousChaine), len(sousChaine) #dernière occurrence si plusieurs choix
+                    pos, length = symbDict.find(sousChaine), len(sousChaine) #dernière occurrence si plusieurs choix
                     break
                 sousChaine = sousChaine[:-1] # On a pas trouvé, donc on enlève un élément.
             
@@ -43,12 +53,11 @@ class LZ77:
             else:
                 pos = pos + decalage #Pour l'ajustement des indices de position quand le dictionnaire n'est pas plein.
 
-            triplets.append((pos, length, c))
+            self.triplets.append((pos, length, c))
 
             index += max(length+1, 1)  # Avance la position dans le message
         
-        self.triplets = triplets
-        return triplets
+        return self.triplets
 
     def decode(self):
         decoded = ""
@@ -69,4 +78,5 @@ class LZ77:
         return decoded
 
     def compression_rate(self) -> float:
+        print(len(self.triplets))
         return 1 - (len(self.triplets) * 3) / len(self.message)

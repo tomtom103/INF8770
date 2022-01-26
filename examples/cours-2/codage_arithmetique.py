@@ -112,7 +112,7 @@ def decode(encoded_msg: Decimal, msg_length: int, probability_table: dict):
             
 
 if __name__ == "__main__":
-    original_msg = "abcabcde"
+    original_msg = "ABAABCABACABBABCDAADAAABABAAABAABBABABAABAAB"
     print("Original message:", original_msg)
     encoded_msg, probability_table, interval_min, interval_max = encode(original_msg)
     print("Encoded message:", encoded_msg)
