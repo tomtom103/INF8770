@@ -21,10 +21,11 @@ def process(filepath: Path, type: str):
     print(f"\nRLE {type}:")
     rle = RLE(bytes)
     rle.compress(bytes, output_file_path=filepath.with_suffix('.rle'))
+    print(rle.binaryMap)
     rle.decompress(filepath.with_suffix('.rle'), output_file_path=filepath.with_suffix('.rle.decompressed'))
     print(f"Compressed Size: {os.path.getsize(filepath.with_suffix('.rle'))}")
     print(f"Decompressed Size: {os.path.getsize(filepath.with_suffix('.rle.decompressed'))}")
 
 if __name__ == "__main__":
     # process(Path(__file__).resolve().parent / "assets/images/blanc.bmp", 'image')
-    process(Path(__file__).resolve().parent / "assets/binary/5000", 'Binary')
+    process(Path(__file__).resolve().parent / "assets/text/long_en.txt", 'Text')

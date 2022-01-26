@@ -1,5 +1,6 @@
 import struct
 import numpy as np
+import unicodedata
 
 from bitarray import bitarray
 
