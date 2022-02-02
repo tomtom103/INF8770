@@ -12,7 +12,7 @@ def process(filepath: Path, type: str):
         bytes = f.read()
 
     print(f"\nLZ77 {type}:")
-    lz77 = LZ77(window_size=2048)
+    lz77 = LZ77(window_size=32)
     lz77.compress(bytes, output_file_path=filepath.with_suffix('.lz77'))
     lz77.decompress(filepath.with_suffix('.lz77'), output_file_path=filepath.with_suffix('.lz77.decompressed'))
     print(f"Compressed Size: {os.path.getsize(filepath.with_suffix('.lz77'))}")
@@ -21,11 +21,16 @@ def process(filepath: Path, type: str):
     print(f"\nRLE {type}:")
     rle = RLE(bytes)
     rle.compress(bytes, output_file_path=filepath.with_suffix('.rle'))
-    print(rle.binaryMap)
     rle.decompress(filepath.with_suffix('.rle'), output_file_path=filepath.with_suffix('.rle.decompressed'))
     print(f"Compressed Size: {os.path.getsize(filepath.with_suffix('.rle'))}")
     print(f"Decompressed Size: {os.path.getsize(filepath.with_suffix('.rle.decompressed'))}")
 
+    # Cleanup after the program is done
+    os.remove(filepath.with_suffix('.lz77'))
+    os.remove(filepath.with_suffix('.lz77.decompressed'))
+    os.remove(filepath.with_suffix('.rle'))
+    os.remove(filepath.with_suffix('.rle.decompressed'))
+
 if __name__ == "__main__":
     # process(Path(__file__).resolve().parent / "assets/images/blanc.bmp", 'image')
-    process(Path(__file__).resolve().parent / "assets/text/long_en.txt", 'Text')
+    process(Path(__file__).resolve().parent / "assets/images/blanc.bmp", 'Images')

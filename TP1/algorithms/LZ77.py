@@ -11,7 +11,7 @@ class LZ77:
 
 	def __init__(self, window_size=20, lookahead_size=15):
 		self.window_size = min(window_size, self.MAX_WINDOW_SIZE) 
-		self.lookahead_buffer_size = lookahead_size # length of match is at most 4 bits
+		self.lookahead_buffer_size = lookahead_size # length of match is at most 4 bytes
 
 	def compress(self, data: bytes, output_file_path=None, verbose=False):
 		"""
