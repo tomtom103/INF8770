@@ -38,9 +38,7 @@ class RLE:
                     filedata = [int(item, 2) for item in result]
 
                     output_file.write(bytearray(filedata))
-                    print("File was compressed successfully and saved to output path ...")
             except IOError:
-                print('Could not write to output file path. Please check if the path is correct ...')
                 raise
 
         return result
@@ -58,7 +56,6 @@ class RLE:
             with open(input_file_path, 'rb') as input_file:
                 data = np.fromfile(input_file, dtype)
         except IOError:
-            print('Could not open input file ...')
             raise
         
         data = ["{0:b}".format(item).zfill(self.counterSize) for item in data]
@@ -70,10 +67,8 @@ class RLE:
             try:
                 with open(output_file_path, 'w') as output_file:
                     output_file.write("".join(result))
-                    print('File was decompressed successfully and saved to output path ...')
                     return None 
             except IOError:
-                print('Could not write to output file path. Please check if the path is correct ...')
                 raise 
         return "".join(result)
     

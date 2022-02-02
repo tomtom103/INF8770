@@ -2,7 +2,6 @@
 
 import math
 from bitarray import bitarray
-
 class LZ77:
 	"""
 	A simplified implementation of the LZ77 Compression Algorithm
@@ -66,10 +65,8 @@ class LZ77:
 			try:
 				with open(output_file_path, 'wb') as output_file:
 					output_file.write(output_buffer.tobytes())
-					print("File was compressed successfully and saved to output path ...")
 					return None
 			except IOError:
-				print('Could not write to output file path. Please check if the path is correct ...')
 				raise
 
 		# an output file path was not provided, return the compressed data
@@ -90,7 +87,6 @@ class LZ77:
 			with open(input_file_path, 'rb') as input_file:
 				data.fromfile(input_file)
 		except IOError:
-			print('Could not open input file ...')
 			raise
 
 		while len(data) >= 9:
@@ -118,10 +114,8 @@ class LZ77:
 			try:
 				with open(output_file_path, 'wb') as output_file:
 					output_file.write(out_data)
-					print('File was decompressed successfully and saved to output path ...')
 					return None 
 			except IOError:
-				print('Could not write to output file path. Please check if the path is correct ...')
 				raise 
 		return out_data
 
