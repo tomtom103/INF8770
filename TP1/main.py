@@ -13,7 +13,7 @@ def process(filepath: Path, type: str):
     print(f"{os.path.basename(filepath)}:\n")
 
     print(f"LZ77 {type}:")
-    lz77 = LZ77(window_size=32)
+    lz77 = LZ77(window_size=2048)
     lz77.compress(bytes, output_file_path=filepath.with_suffix('.lz77'))
     lz77.decompress(filepath.with_suffix('.lz77'), output_file_path=filepath.with_suffix('.lz77.decompressed'))
     print(f"Compressed Size: {os.path.getsize(filepath.with_suffix('.lz77'))}")
@@ -33,8 +33,10 @@ def process(filepath: Path, type: str):
     os.remove(filepath.with_suffix('.rle.decompressed'))
 
 if __name__ == "__main__":
-    process(Path(__file__).resolve().parent / "assets/wav/brown-noise.wav", 'WAV File')
-    process(Path(__file__).resolve().parent / "assets/wav/pink-noise.wav", 'WAV File')
-    process(Path(__file__).resolve().parent / "assets/wav/white-noise.wav", 'WAV File')
-    process(Path(__file__).resolve().parent / "assets/wav/cantina-band.wav", 'WAV File')
-    process(Path(__file__).resolve().parent / "assets/wav/clap.wav", 'WAV File')
+    process(Path(__file__).resolve().parent / "assets/temp/asine.wav", 'WAV')
+    process(Path(__file__).resolve().parent / "assets/temp/beach_and_seagulls.wav", 'WAV')
+    process(Path(__file__).resolve().parent / "assets/temp/saw.wav", 'WAV')
+    process(Path(__file__).resolve().parent / "assets/temp/seawave.wav", 'WAV')
+    process(Path(__file__).resolve().parent / "assets/temp/sine.wav", 'WAV')
+    process(Path(__file__).resolve().parent / "assets/temp/sinec4.wav", 'WAV')
+    process(Path(__file__).resolve().parent / "assets/temp/square.wav", 'WAV')

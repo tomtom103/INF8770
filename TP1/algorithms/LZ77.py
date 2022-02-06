@@ -106,7 +106,7 @@ class LZ77:
 				distance = (byte1 << 4) | (byte2 >> 4)
 				length = (byte2 & 0xf)
 
-				for i in range(length):
+				for _ in range(length):
 					output_buffer.append(output_buffer[-distance])
 		out_data =  b''.join(output_buffer)
 

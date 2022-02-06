@@ -1,6 +1,7 @@
 import struct
 import numpy as np
 import unicodedata
+import math
 
 from bitarray import bitarray
 
@@ -31,13 +32,11 @@ class RLE:
                 result.extend(["{0:b}".format(count).zfill(self.counterSize), self.binaryMap[message[i - 1]]])
                 count = 0
         result.extend(["{0:b}".format(count).zfill(self.counterSize), self.binaryMap[message[-1]]])
-        
         if output_file_path:
             try:
                 with open(output_file_path, 'wb') as output_file:
-                    filedata = [int(item, 2) for item in result]
-
-                    output_file.write(bytearray(filedata))
+                    filedata = [int(item, 2).to_bytes(1, 'little') for item in result]
+                    output_file.write(b"".join(filedata))
             except IOError:
                 raise
 
@@ -61,12 +60,13 @@ class RLE:
         data = ["{0:b}".format(item).zfill(self.counterSize) for item in data]
         for i in range(0, len(data), 2):
             char = list(self.binaryMap.keys())[list(self.binaryMap.values()).index(data[i + 1])]
-            result.append(chr(char) * (int(data[i], 2) + 1))
+            for _ in range((int(data[i], 2) + 1)):
+                result.append(char.to_bytes(1, byteorder='little'))
 
         if output_file_path:
             try:
-                with open(output_file_path, 'w') as output_file:
-                    output_file.write("".join(result))
+                with open(output_file_path, 'wb') as output_file:
+                    output_file.write(b"".join(result))
                     return None 
             except IOError:
                 raise 
