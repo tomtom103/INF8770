@@ -1,9 +1,4 @@
-import struct
 import numpy as np
-import unicodedata
-import math
-
-from bitarray import bitarray
 
 class RLE:
     def __init__(self, message: bytes, counterSize: int = 8) -> None:
@@ -40,12 +35,6 @@ class RLE:
             except IOError:
                 raise
 
-        return result
-
-    def message_as_binary(self) -> str:
-        result = ""
-        for item in self.message:
-            result += self.binaryMap[item]
         return result
 
     def decompress(self, input_file_path, output_file_path = None) -> bytes:
