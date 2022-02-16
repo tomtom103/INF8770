@@ -21,9 +21,15 @@ import cv2
 if __name__ == "__main__":
     # Get current file path
     current_path = Path(__file__).parent.absolute()
-    img = Image.open(current_path / './assets/baboon.png')
-    img.convert("RGB").save(current_path / './assets/baboon2.jp2', 'JPEG2000', quality_mode='dB', quality_layers=[25])
+    img = Image.open(current_path / './assets/almonds.png')
+    img.convert("RGB").save(current_path / './assets/full_quality_jpeg2000.jp2', 'JPEG2000')
+    img.convert("RGB").save(current_path / './assets/compressed_jpeg2000.jp2', 'JPEG2000', quality_mode='rates', quality_layers=[9])
 
-    im1 = cv2.imread('./TP2/assets/baboon.jp2')
-    im2 = cv2.imread('./TP2/assets/baboon2.jp2')
-    print(cv2.PSNR(im1, im2))
+    img.convert("RGB").save(current_path / './assets/full_quality_jpeg.jpg', 'JPEG', quality=95)
+    img.convert("RGB").save(current_path / './assets/compressed_jpeg.jpg', 'JPEG', quality=85)
+    im1 = cv2.imread('./TP2/assets/compressed_jpeg2000.jp2')
+    im2 = cv2.imread('./TP2/assets/full_quality_jpeg2000.jp2')
+    print("JPEG2000: ", cv2.PSNR(im1, im2))
+    im1 = cv2.imread('./TP2/assets/full_quality_jpeg.jpg')
+    im2 = cv2.imread('./TP2/assets/compressed_jpeg.jpg')
+    print("JPEG: ", cv2.PSNR(im1, im2))
