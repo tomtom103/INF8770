@@ -1,8 +1,14 @@
+import enum
 import sys
+from typing import Literal
 import cv2
 
 from pathlib import Path
 from matplotlib import pyplot as plt
+
+class FrameType(enum.Enum):
+    CUT = 1
+    FADE = 2
 
 def main():
     video_path = Path(__file__).parent / './assets/ski_cross.mp4'
@@ -14,6 +20,8 @@ def main():
         sys.exit(1)
 
     current_frame = last_frame = None
+
+    frames = []
 
     while True:
         last_frame = current_frame
@@ -54,8 +62,14 @@ def main():
             average = float(sum(comps)) / float(len(comps))
 
             if average > 0.3:
-                print(f'Frame {frame_number}')
-                print(f'Comp: {comp}')
+                if not frames:
+                    frames.append({ 'frame': frame_number, 'type': FrameType.CUT })
+                else:
+                    if abs(frame_number - frames[-1]['frame']) > 10:
+                        frames.append({ 'frame': frame_number, 'type': FrameType.CUT })
+                    else:
+                        frames[-1]['type'] = FrameType.FADE
+                        frames.append({ 'frame': frame_number, 'type': FrameType.FADE })
             
             comps = []
 
@@ -65,6 +79,9 @@ def main():
     capture.release()
 
     cv2.destroyAllWindows()
+
+    for frame in frames:
+        print(f'Frame : {frame["frame"]} - Type: {frame["type"]}')
 
 if __name__ == '__main__':
     main()
