@@ -1,7 +1,7 @@
 cycler==0.11.0
-fonttools==4.30.0
+fonttools==4.31.2
 imageio==2.16.0
-kiwisolver==1.4.0
+kiwisolver==1.4.2
 matplotlib==3.5.1
 networkx==2.6.3
 numpy==1.22.2
