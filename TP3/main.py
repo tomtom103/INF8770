@@ -1,9 +1,11 @@
 import sys
 import cv2
-from enum import Enum
 import statistics
 
 import numpy as np
+import matplotlib.pyplot as plt
+
+from enum import Enum
 
 from typing import Dict, List, TypedDict
 from pathlib import Path
@@ -15,6 +17,10 @@ class FrameType(Enum):
 class Frame(TypedDict):
     frame: int
     type: FrameType
+
+# sect1 = []
+# sect2 = []
+
 
 def main():
     video_path = Path(__file__).parent / './assets/ski_cross.mp4'
@@ -61,7 +67,6 @@ def main():
                     current_hist = cv2.calcHist([current_scope], [0], None, [256], [0, 256])
                     current_hist = cv2.normalize(current_hist, current_hist).flatten()
 
-
                     last_hist = cv2.calcHist([last_scope], [0], None, [256], [0, 256])
                     last_hist = cv2.normalize(last_hist, last_hist).flatten()
 
@@ -96,13 +101,34 @@ def main():
 
     cv2.destroyAllWindows()
 
-    print(result)
-
     for frame in result:
         if len(frame) > 1:
             print(f"Fondu: {min(frame)} - {max(frame)}")
         else:
             print(f"Coupure: {frame[0]}")
+
+    # Code utilisé pour générer des histogrammes.
+    # kwargs = dict(histtype='stepfilled', alpha=0.3, density=True, bins=50)
+
+    # plt.hist(sect1[0], color='#e28743', **kwargs)
+    # plt.hist(sect2[0], color='#154c79', **kwargs)
+
+    # plt.show()
+
+    # plt.hist(sect1[1], color='#e28743', **kwargs)
+    # plt.hist(sect2[1], color='#154c79', **kwargs)
+
+    # plt.show()
+
+    # plt.hist(sect1[2], color='#e28743', **kwargs)
+    # plt.hist(sect2[2], color='#154c79', **kwargs)
+
+    # plt.show()
+
+    # plt.hist(sect1[3], color='#e28743', **kwargs)
+    # plt.hist(sect2[3], color='#154c79', **kwargs)
+
+    # plt.show()
 
 if __name__ == '__main__':
     main()
